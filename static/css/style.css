@@ -1,0 +1,32 @@
+body{
+    background:#0b1020;
+    color:white;
+    font-family:Arial;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #444;
+    padding:12px;
+}
+
+.btn{
+    padding:10px 20px;
+    background:#c72cff;
+    color:white;
+    text-decoration:none;
+}
+
+.hijau{
+    background:#00ff84;
+    color:black;
+}
