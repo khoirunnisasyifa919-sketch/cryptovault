@@ -53,8 +53,10 @@ def generate_barcode(signature):
     os.makedirs("static/barcode", exist_ok=True)
 
     verification_url = (
-        "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/sertifikat"
+    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
+    + signature
     )
+
 
     code128 = barcode.get(
         "code128",
@@ -75,8 +77,10 @@ def generate_qr(signature):
     filename = f"static/qr/{signature}.png"
 
     verification_url = (
-        "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/sertifikat"
+    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
+    + signature
     )
+
 
     qr = qrcode.make(
         verification_url
@@ -288,10 +292,6 @@ def verify(signature):
         buku=buku,
         waktu=waktu
     )
-verification_url = (
-    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
-    + signature
-)
 
 if __name__ == "__main__":
     app.run(debug=True)
