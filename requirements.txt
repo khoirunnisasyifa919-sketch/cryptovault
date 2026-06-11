@@ -1,6 +1,0 @@
-﻿Flask
-Flask-SQLAlchemy
-reportlab
-gunicorn
-python-barcode
-Pillow
