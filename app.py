@@ -66,15 +66,32 @@ def generate_barcode(signature):
 
 def generate_qr(signature):
 
-    os.makedirs("static/qr", exist_ok=True)
+    base_url = "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app"
 
-    filename = f"static/qr/{signature}.png"
-
-    qr = qrcode.make(signature)
+    qr = qrcode.make(base_url)
 
     qr.save(filename)
 
     return filename
+# ==========================
+# VERIFY
+# ==========================
+
+@app.route('/verify/<signature>')
+def verify(signature):
+
+    current_signature = generate_signature()
+
+    if signature == current_signature:
+        status = "VALID"
+    else:
+        status = "TIDAK VALID"
+
+    return render_template(
+        'verify.html',
+        status=status,
+        signature=signature
+    )
 # ==========================
 # HOME
 # ==========================
