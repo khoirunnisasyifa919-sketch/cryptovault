@@ -52,9 +52,13 @@ def generate_barcode(signature):
 
     os.makedirs("static/barcode", exist_ok=True)
 
+    verification_url = (
+        "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/sertifikat"
+    )
+
     code128 = barcode.get(
         "code128",
-        signature,
+        verification_url,
         writer=ImageWriter()
     )
 
@@ -70,7 +74,13 @@ def generate_qr(signature):
 
     filename = f"static/qr/{signature}.png"
 
-    qr = qrcode.make(signature)
+    verification_url = (
+        "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/sertifikat"
+    )
+
+    qr = qrcode.make(
+        verification_url
+    )
 
     qr.save(filename)
 
@@ -229,6 +239,59 @@ def export_pdf():
         mimetype='application/pdf'
     )
 
+# ==========================
+# SERTIFIKAT
+# ==========================
+
+@app.route('/sertifikat')
+def sertifikat():
+
+    buku = Buku.query.all()
+
+    signature = generate_signature()
+
+    waktu = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+    return render_template(
+        'sertifikat.html',
+        buku=buku,
+        signature=signature,
+        waktu=waktu
+    )
+
+# ==========================
+# VERIFY
+# ==========================
+
+@app.route('/verify/<signature>')
+def verify(signature):
+
+    current_signature = generate_signature()
+
+    status = (
+        "VALID"
+        if signature == current_signature
+        else "TIDAK VALID"
+    )
+    buku = Buku.query.all()
+
+    waktu = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+    return render_template(
+        'verify.html',
+        status=status,
+        signature=current_signature,
+        buku=buku,
+        waktu=waktu
+    )
+verification_url = (
+    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
+    + signature
+)
 
 if __name__ == "__main__":
     app.run(debug=True)
