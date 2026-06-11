@@ -66,9 +66,15 @@ def generate_barcode(signature):
 
 def generate_qr(signature):
 
-    base_url = ("https://pemrogramankriptografi-production-c48c-syifa.up.railway.app"+"/verify/"+signature)
+    verification_url = (
+    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app"
+    + "/verify/"
+    + signature
+)
 
-    qr = qrcode.make(base_url)
+qr = qrcode.make(
+    verification_url
+)
 
 
 # ==========================
