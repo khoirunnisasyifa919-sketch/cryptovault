@@ -70,9 +70,7 @@ def generate_qr(signature):
 
     qr = qrcode.make(base_url)
 
-    qr.save(filename)
 
-    return filename
 # ==========================
 # VERIFY
 # ==========================
