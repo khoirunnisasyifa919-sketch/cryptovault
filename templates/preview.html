@@ -1,0 +1,87 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="card preview-card">
+    <div class="card-header">
+        <div class="header-left">
+            <h2>Pratinjau Dokumen PDF</h2>
+            <p class="header-desc">Halaman ini mensimulasikan rancangan dokumen resmi sebelum diekspor ke PDF.</p>
+        </div>
+        <div class="header-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-outline">
+                <i class="fa-solid fa-arrow-left"></i> Kembali
+            </a>
+            <a href="{{ url_for('download_pdf') }}" class="btn btn-secondary">
+                <i class="fa-solid fa-download"></i> Unduh PDF Resmi
+            </a>
+        </div>
+    </div>
+    
+    <div class="card-body document-preview-container">
+        <div class="pdf-page" style="max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <div class="pdf-page-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <span class="pdf-brand" style="font-weight: 700; color: #4f46e5;"><i class="fa-solid fa-book-open-reader"></i> LibSigManager</span>
+                <span class="pdf-doc-type" style="font-size: 12px; color: #94a3b8;">DOKUMEN INTEGRITAS DATA</span>
+            </div>
+            <div class="pdf-divider" style="height: 2px; background: linear-gradient(90deg, #4f46e5, #cbd5e1); margin: 20px 0;"></div>
+            
+            <div class="pdf-page-body">
+                <h1 class="pdf-title" style="font-size: 24px; color: #1e293b; margin-bottom: 24px;">Data Buku</h1>
+                
+                <!-- TABEL DATA BUKU -->
+                <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 30px;">
+                    <thead>
+                        <tr style="background-color: #4f46e5; color: white;">
+                            <th style="padding: 10px; text-align: left; border: 1px solid #4f46e5; font-weight: bold;">Judul</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid #4f46e5; font-weight: bold;">Penulis</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid #4f46e5; font-weight: bold;">Penerbit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr style="background-color: {% if loop.index is even %}#f8fafc{% else %}white{% endif %};">
+                            <td style="padding: 8px; border: 1px solid #cbd5e1; vertical-align: top;">{{ book.judul }}</td>
+                            <td style="padding: 8px; border: 1px solid #cbd5e1; vertical-align: top;">{{ book.penulis }}</td>
+                            <td style="padding: 8px; border: 1px solid #cbd5e1; vertical-align: top;">{{ book.penerbit }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <!-- TANDA TANGAN DIGITAL DI SEBELAH KANAN -->
+                <!-- Susunan: Jabatan (atas) -> QR (tengah) -> Nama (bawah) -->
+                <div style="margin-top: 60px; display: flex; justify-content: flex-end;">
+                    <div style="text-align: center; width: 180px;">
+                        <!-- JABATAN (di atas QR) -->
+                        <p style="font-size: 10px; color: #64748b; margin: 0 0 10px 0;">CEO LibSigManager</p>
+                        
+                        <!-- QR CODE -->
+                        <div style="background: white; padding: 10px; display: inline-block; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code Verifikasi" 
+                                 style="width: 140px; height: 140px; display: block;">
+                        </div>
+                        
+                        <!-- NAMA (di bawah QR) -->
+                        <p style="font-size: 12px; font-weight: bold; color: #1e293b; margin: 10px 0 0 0;">Ahmad Zamroni</p>
+                    </div>
+                </div>
+                
+                <!-- Petunjuk Verifikasi -->
+                <div style="margin-top: 30px; padding: 12px; background: #e0e7ff; border-radius: 8px;">
+                    <p style="margin: 0; font-size: 12px; color: #3730a3; text-align: center;">
+                        <i class="fa-solid fa-qrcode"></i> Scan QR Code dengan HP untuk verifikasi keaslian dokumen
+                    </p>
+                    <p style="margin-top: 8px; font-size: 10px; color: #4f46e5; word-break: break-all; text-align: center;">
+                        {{ qr_url }}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="pdf-page-footer" style="margin-top: 40px; text-align: center;">
+                <div class="pdf-divider" style="height: 1px; background: #e2e8f0; margin: 20px 0;"></div>
+                <p style="font-size: 10px; color: #94a3b8;">Dokumen ini dibuat otomatis oleh sistem pada: {{ timestamp }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
