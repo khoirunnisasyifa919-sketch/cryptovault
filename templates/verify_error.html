@@ -1,24 +1,54 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="card" style="max-width: 500px; margin: 0 auto; text-align: center;">
+    
     <div class="card-header" style="background: #ef4444;">
         <h2 style="color: white;">
-            <i class="fa-solid fa-circle-exclamation"></i> Verifikasi Gagal
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Verifikasi Gagal
         </h2>
     </div>
+
     <div class="card-body">
-        <i class="fa-solid fa-file-circle-exclamation" style="font-size: 64px; color: #ef4444; margin-bottom: 20px;"></i>
-        <h3>Token Verifikasi Tidak Valid</h3>
+
+        <i class="fa-solid fa-music" style="font-size: 64px; color: #ef4444; margin-bottom: 20px;"></i>
+
+        <h3>Token Verifikasi Koleksi Lagu Tidak Valid</h3>
+
         <p style="color: #64748b; margin-top: 10px;">
-            Sertifikat yang Anda coba verifikasi tidak ditemukan atau telah kadaluarsa.
+            Sertifikat digital koleksi lagu yang Anda coba verifikasi tidak ditemukan atau sudah kadaluarsa.
         </p>
+
         <p style="color: #64748b; margin-bottom: 20px;">
-            Pastikan Anda scan QR code yang valid dan masih berlaku.
+            Pastikan Anda memindai QR Code dari dokumen koleksi lagu yang resmi dan masih berlaku.
         </p>
-        <a href="{{ url_for('index') }}" class="btn btn-primary" style="background: #4f46e5; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none;">
-            <i class="fa-solid fa-home"></i> Kembali ke Beranda
+
+        <div style="
+            background:#fef2f2;
+            border:1px solid #fecaca;
+            padding:15px;
+            border-radius:10px;
+            margin-bottom:20px;
+        ">
+            <p style="margin:0; color:#991b1b;">
+                <strong>Status:</strong> Sertifikat Koleksi Lagu Tidak Dapat Diverifikasi
+            </p>
+        </div>
+
+        <a href="{{ url_for('index') }}"
+           class="btn btn-primary"
+           style="
+                background:#8b5cf6;
+                color:white;
+                padding:12px 24px;
+                border-radius:10px;
+                text-decoration:none;
+           ">
+            <i class="fa-solid fa-house"></i>
+            Kembali ke Beranda
         </a>
+
     </div>
 </div>
 {% endblock %}
