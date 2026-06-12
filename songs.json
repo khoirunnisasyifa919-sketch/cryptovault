@@ -6,33 +6,63 @@
         "genre": "Pop",
         "tahun": "2017"
     },
-    {
-        "judul": "Shape of You",
-        "penyanyi": "Ed Sheeran",
-        "negara": "Inggris",
-        "genre": "Pop",
-        "tahun": "2017"
-    },
-    {
-        "judul": "Dynamite",
-        "penyanyi": "BTS",
-        "negara": "Korea Selatan",
-        "genre": "K-Pop",
-        "tahun": "2020"
-    },
-    {
-        "judul": "Someone Like You",
-        "penyanyi": "Adele",
-        "negara": "Inggris",
-        "genre": "Pop",
-        "tahun": "2011"
-    },
+    
     {
         "judul": "Hati-Hati di Jalan",
         "penyanyi": "Tulus",
         "negara": "Indonesia",
         "genre": "Pop",
         "tahun": "2022"
+    },
+
+    {
+        "judul": "Joyride",
+        "penyanyi": "CORTIS",
+        "negara": "Amerika Serikat",
+        "genre": "Indie Pop",
+        "tahun": "2024"
+    },
+    {
+        "judul": "Never Let Go",
+        "penyanyi": "Longshot",
+        "negara": "Amerika Serikat",
+        "genre": "Alternative Rock",
+        "tahun": "2018"
+    },
+    {
+        "judul": "Jatuh Suka",
+        "penyanyi": "Tulus",
+        "negara": "Indonesia",
+        "genre": "Pop",
+        "tahun": "2022"
+    },
+    {
+        "judul": "Shape of My Heart",
+        "penyanyi": "Backstreet Boys",
+        "negara": "Amerika Serikat",
+        "genre": "Pop",
+        "tahun": "2000"
+    },
+    {
+        "judul": "About You",
+        "penyanyi": "The 1975",
+        "negara": "Inggris",
+        "genre": "Alternative Rock",
+        "tahun": "2022"
+    },
+    {
+        "judul": "Kota Ini Tak Sama Tanpamu",
+        "penyanyi": "Nadhif Basalamah",
+        "negara": "Indonesia",
+        "genre": "Pop",
+        "tahun": "2024"
+    },
+    {
+    "judul": "Prettiest Thing I've Ever Seen",
+    "penyanyi": "LANY",
+    "negara": "Amerika Serikat",
+    "genre": "Pop",
+    "tahun": "2026"
     }
 
 ]
