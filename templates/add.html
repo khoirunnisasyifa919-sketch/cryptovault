@@ -4,8 +4,8 @@
 <div class="card form-card">
     <div class="card-header">
         <div class="header-left">
-            <h2>Tambah Buku Baru</h2>
-            <p class="header-desc">Tambahkan data buku baru ke dalam database.</p>
+            <h2>Tambah Lagu Baru</h2>
+            <p class="header-desc">Tambahkan data lagu baru ke dalam database.</p>
         </div>
         <a href="{{ url_for('index') }}" class="btn btn-outline">
             <i class="fa-solid fa-arrow-left"></i> Kembali
@@ -15,24 +15,32 @@
     <div class="card-body">
         <form action="{{ url_for('add_book') }}" method="POST" class="modern-form">
             <div class="form-group">
-                <label for="judul"><i class="fa-solid fa-book"></i> Judul Buku</label>
-                <input type="text" id="judul" name="judul" required placeholder="Masukkan judul lengkap buku..." autocomplete="off">
+                <label for="judul lagu"><i class="fa-solid fa-book"></i> Judul Lagu</label>
+                <input type="text" id="judul lagu" name="judul lagu" required placeholder="Masukkan judul lengkap lagu..." autocomplete="off">
             </div>
             
             <div class="form-group">
-                <label for="penulis"><i class="fa-solid fa-user-pen"></i> Penulis / Pengarang</label>
-                <input type="text" id="penulis" name="penulis" required placeholder="Masukkan nama penulis..." autocomplete="off">
+                <label for="penyanyi"><i class="fa-solid fa-user-pen"></i> Penyanyi</label>
+                <input type="text" id="penyanyi" name="penyanyi" required placeholder="Masukkan nama penyanyi..." autocomplete="off">
             </div>
             
             <div class="form-group">
-                <label for="penerbit"><i class="fa-solid fa-building-columns"></i> Penerbit</label>
-                <input type="text" id="penerbit" name="penerbit" required placeholder="Masukkan nama penerbit..." autocomplete="off">
+                <label for="negara"><i class="fa-solid fa-building-columns"></i> Negara</label>
+                <input type="text" id="negara" name="negara" required placeholder="Masukkan nama Negara..." autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="genre"><i class="fa-solid fa-building-columns"></i> Genre</label>
+                <input type="text" id="genre" name="genre" required placeholder="Masukkan nama Genre..." autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="tahun"><i class="fa-solid fa-building-columns"></i> Tahun/label>
+                <input type="number" id="tahun" name="tahun" required placeholder="Masukkan nama Tahun..." autocomplete="off">
             </div>
             
             <div class="form-actions">
                 <a href="{{ url_for('index') }}" class="btn btn-outline">Batal</a>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Buku
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Lagu
                 </button>
             </div>
         </form>
