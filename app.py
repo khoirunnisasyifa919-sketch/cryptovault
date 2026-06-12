@@ -99,6 +99,31 @@ def export_pdf():
         pdf_path,
         as_attachment=True
     )
+@app.route("/verify/<signature>")
+def verify(signature):
+
+    songs = load_songs()
+
+    import hashlib
+    import json
+
+    current_hash = hashlib.sha256(
+        json.dumps(
+            songs,
+            sort_keys=True
+        ).encode()
+    ).hexdigest()
+
+    if signature == current_hash:
+        return render_template(
+            "verify.html",
+            hash=signature
+        )
+
+    return render_template(
+        "verify_error.html",
+        hash=signature
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
