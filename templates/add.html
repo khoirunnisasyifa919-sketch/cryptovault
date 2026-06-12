@@ -1,113 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="card form-card">
-    <div class="card-header">
-        <div class="header-left">
-            <h2>Tambah Lagu Baru</h2>
-            <p class="header-desc">
-                Tambahkan data lagu ke dalam koleksi musik digital.
-            </p>
-        </div>
 
-        <a href="{{ url_for('index') }}" class="btn btn-outline">
-            <i class="fa-solid fa-arrow-left"></i> Kembali
-        </a>
-    </div>
+<div class="form-box">
 
-    <div class="card-body">
+<h2>Tambah Daftar Lagu</h2>
 
-        <form action="{{ url_for('add_song') }}" method="POST" class="modern-form">
+<form method="POST">
 
-            <div class="form-group">
-                <label for="judul_lagu">
-                    <i class="fa-solid fa-music"></i>
-                    Judul Lagu
-                </label>
+<input name="judul" placeholder="Judul Lagu" required>
 
-                <input
-                    type="text"
-                    id="judul_lagu"
-                    name="judul_lagu"
-                    required
-                    placeholder="Masukkan judul lagu..."
-                    autocomplete="off">
-            </div>
+<input name="penyanyi" placeholder="Penyanyi" required>
 
-            <div class="form-group">
-                <label for="penyanyi">
-                    <i class="fa-solid fa-microphone"></i>
-                    Penyanyi
-                </label>
+<input name="negara" placeholder="Negara" required>
 
-                <input
-                    type="text"
-                    id="penyanyi"
-                    name="penyanyi"
-                    required
-                    placeholder="Masukkan nama penyanyi..."
-                    autocomplete="off">
-            </div>
+<input name="genre" placeholder="Genre" required>
 
-            <div class="form-group">
-                <label for="negara">
-                    <i class="fa-solid fa-globe"></i>
-                    Negara Asal
-                </label>
+<input name="tahun" placeholder="Tahun" required>
 
-                <input
-                    type="text"
-                    id="negara"
-                    name="negara"
-                    required
-                    placeholder="Contoh: Indonesia, Korea Selatan, Inggris..."
-                    autocomplete="off">
-            </div>
+<button>Simpan Lagu</button>
 
-            <div class="form-group">
-                <label for="genre">
-                    <i class="fa-solid fa-headphones"></i>
-                    Genre Musik
-                </label>
+</form>
 
-                <input
-                    type="text"
-                    id="genre"
-                    name="genre"
-                    required
-                    placeholder="Contoh: Pop, Rock, Jazz, Dangdut..."
-                    autocomplete="off">
-            </div>
-
-            <div class="form-group">
-                <label for="tahun">
-                    <i class="fa-solid fa-calendar"></i>
-                    Tahun Rilis
-                </label>
-
-                <input
-                    type="number"
-                    id="tahun"
-                    name="tahun"
-                    required
-                    min="1900"
-                    max="2100"
-                    placeholder="Masukkan tahun rilis">
-            </div>
-
-            <div class="form-actions">
-                <a href="{{ url_for('index') }}" class="btn btn-outline">
-                    Batal
-                </a>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Simpan Lagu
-                </button>
-            </div>
-
-        </form>
-
-    </div>
 </div>
+
 {% endblock %}
