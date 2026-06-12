@@ -169,3 +169,87 @@ color:#22c55e;
 text-align:center;
 color:#ef4444;
 }
+
+.verify-card{
+    max-width:900px;
+    margin:50px auto;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.success-card{
+    box-shadow:0 0 30px rgba(0,255,150,0.3);
+}
+
+.verify-icon{
+    font-size:80px;
+    margin-bottom:20px;
+}
+
+.verify-card h1{
+    margin-bottom:20px;
+    color:#22c55e;
+}
+
+.verify-message{
+    line-height:1.8;
+    margin-bottom:30px;
+    color:#d1d5db;
+}
+
+.hash-box{
+    background:rgba(0,0,0,0.3);
+    padding:20px;
+    border-radius:15px;
+    margin:25px 0;
+}
+
+.hash-box h3{
+    margin-bottom:10px;
+    color:#38bdf8;
+}
+
+.hash-box code{
+    display:block;
+    word-wrap:break-word;
+    color:#f8fafc;
+}
+
+.info-box{
+    margin-top:25px;
+    text-align:left;
+    display:inline-block;
+}
+
+.info-box p{
+    margin:10px 0;
+    color:#a7f3d0;
+}
+
+.btn-group{
+    margin-top:35px;
+}
+
+.btn-home{
+    display:inline-block;
+    padding:14px 28px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    color:white;
+    background:linear-gradient(
+        90deg,
+        #7c3aed,
+        #06b6d4
+    );
+    transition:0.3s;
+}
+
+.btn-home:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(124,58,237,0.5);
+}
