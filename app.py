@@ -16,9 +16,9 @@ app.secret_key = os.environ.get('SECRET_KEY', 'flask-book-manager-secret-key-123
 download_tokens = {}
 
 if os.environ.get('VERCEL'):
-    DATABASE = '/tmp/books.db'
+    DATABASE = '/tmp/songs.db'
 else:
-    DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'books.db')
+    DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'songs.db')
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -32,6 +32,7 @@ def init_db():
     
     conn = get_db()
     cursor = conn.cursor()
+    
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS songs (
     id TEXT PRIMARY KEY,
@@ -42,9 +43,11 @@ def init_db():
     tahun INTEGER NOT NULL
     )
     ''')
+    
     conn.commit()
     
     cursor.execute('SELECT COUNT(*) FROM songs')
+    
     if cursor.fetchone()[0] == 0:
         sample_songs = [
         (
@@ -72,6 +75,7 @@ def init_db():
             2022
         )
         ]
+        
         cursor.executemany('INSERT INTO songs (id, judul_lagu, penyanyi, negara, genre, tahun) VALUES (?, ?, ?, ?, ?, ?)', sample_songs)
         conn.commit()
     
