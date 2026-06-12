@@ -91,13 +91,15 @@ def preview():
     )
 
 @app.route("/export")
-def export_pdf():
+def export_pdf_route():
 
     pdf_path = generate_signed_pdf()
 
     return send_file(
         pdf_path,
-        as_attachment=True
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name="koleksi_lagu_signed.pdf"
     )
 @app.route("/verify/<signature>")
 def verify(signature):
