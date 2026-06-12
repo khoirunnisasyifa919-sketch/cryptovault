@@ -44,7 +44,7 @@ def init_db():
     ''')
     conn.commit()
     
-    cursor.execute('SELECT COUNT(*) FROM books')
+    cursor.execute('SELECT COUNT(*) FROM songs')
     if cursor.fetchone()[0] == 0:
         sample_songs = [
         (
@@ -72,7 +72,7 @@ def init_db():
             2022
         )
         ]
-        cursor.executemany('INSERT INTO books (id, judul, penulis, penerbit) VALUES (?, ?, ?, ?)', sample_books)
+        cursor.executemany('INSERT INTO songs (id, judul_lagu, penyanyi, negara, genre, tahun) VALUES (?, ?, ?, ?, ?, ?)', sample_songs)
         conn.commit()
     
     conn.close()
