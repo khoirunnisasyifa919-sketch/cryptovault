@@ -29,12 +29,13 @@ def generate_signed_pdf():
         songs,
         sort_keys=True
     )
+    sha_signature = hashlib.sha256(
+    data_string.encode()
+    ).hexdigest()
 
-    verify_url = (
-    f"pemrograman-kriptografi-production-digitalmusic-syifa.up.railway.app/verify/{sha_signature}"
-    )
+    qr = qrcode.make(sha_signature)
+
     
-    qr = qrcode.make(verify_url)
     
     qr_buffer=BytesIO()
     qr.save(qr_buffer)
