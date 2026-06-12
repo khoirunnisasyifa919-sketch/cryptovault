@@ -33,7 +33,11 @@ def generate_signed_pdf():
     data_string.encode()
     ).hexdigest()
 
-    qr = qrcode.make(sha_signature)
+    verify_url = (
+    f"https://pemrograman-kriptografi-production-digitalmusic-syifa.up.railway.app/verify/{sha_signature}"
+    )
+    
+    qr = qrcode.make(verify_url)
 
     
     
