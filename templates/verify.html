@@ -2,21 +2,48 @@
 
 {% block content %}
 
-<div class="verify-card">
+<div class="verify-card success-card">
 
-<h1>✓ Data Koleksi Lagu Valid & Terverifikasi</h1>
+    <div class="verify-icon">
+        ✅
+    </div>
 
-<p>
-Digital Signature SHA-256 cocok
-dan data koleksi lagu tidak berubah.
-</p>
+    <h1>Data Koleksi Lagu Berhasil Diverifikasi</h1>
 
-<p>
-SHA-256:
-</p>
+    <p class="verify-message">
+        Sistem berhasil memverifikasi integritas data menggunakan
+        <strong>Digital Signature SHA-256</strong>.
+        Seluruh data koleksi lagu dinyatakan <strong>asli, valid,
+        dan tidak mengalami perubahan</strong> sejak dokumen dibuat.
+    </p>
 
-<code>{{ hash }}</code>
-  
+    <div class="hash-box">
+        <h3>Signature SHA-256</h3>
+        <code>{{ hash }}</code>
+    </div>
+
+    <div class="info-box">
+        <p>
+            ✓ Dokumen terautentikasi oleh sistem Digital Music Archive|Alunan Amerta
+        </p>
+
+        <p>
+            ✓ Data koleksi lagu tidak terdeteksi mengalami modifikasi
+        </p>
+
+        <p>
+            ✓ Integritas dokumen terjaga dengan baik
+        </p>
+    </div>
+
+    <div class="btn-group">
+
+        <a href="{{ url_for('index') }}" class="btn-home">
+            🏠 Kembali ke Halaman Utama
+        </a>
+
+    </div>
+
 </div>
 
 {% endblock %}
