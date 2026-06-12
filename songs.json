@@ -1,10 +1,10 @@
 [
     {
-        "judul": "Perfect",
-        "penyanyi": "Ed Sheeran",
-        "negara": "Inggris",
-        "genre": "Pop",
-        "tahun": "2017"
+    "judul": "Jangan Pernah Berubah",
+    "penyanyi": "Marcell",
+    "negara": "Indonesia",
+    "genre": "Pop / R&B",
+    "tahun": "2003"
     },
     
     {
@@ -56,6 +56,13 @@
         "negara": "Indonesia",
         "genre": "Pop",
         "tahun": "2024"
+    },
+    {
+    "judul": "Melangitkanmu",
+    "penyanyi": "Ghea Indrawari",
+    "negara": "Indonesia",
+    "genre": "Pop",
+    "tahun": "2024"
     },
     {
     "judul": "Prettiest Thing I've Ever Seen",
