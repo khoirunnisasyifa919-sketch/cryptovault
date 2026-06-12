@@ -1,10 +1,11 @@
-import hashlib
 import json
-import time
-from io import BytesIO
+import hashlib
+import qrcode
+import os
 
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
+from io import BytesIO
+from datetime import datetime
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -13,273 +14,120 @@ from reportlab.platypus import (
     TableStyle,
     Image
 )
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import Table as RTTable
 
-import qrcode
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 
+DATA_FILE="songs.json"
 
-# ==========================================================
-# HASH SHA-256 DATA LAGU
-# ==========================================================
+def generate_signed_pdf():
 
-def calculate_songs_hash(songs):
-    songs_data = []
+    with open(DATA_FILE,"r") as f:
+        songs=json.load(f)
 
-    for s in songs:
-        songs_data.append({
-            'id': s['id'],
-            'judul_lagu': s['judul_lagu'],
-            'penyanyi': s['penyanyi'],
-            'negara': s['negara'],
-            'genre': s['genre'],
-            'tahun': s['tahun']
-        })
-
-    songs_data.sort(key=lambda x: x['id'])
-
-    serialized = json.dumps(
-        songs_data,
-        sort_keys=True,
-        ensure_ascii=False
+    data_string=json.dumps(
+        songs,
+        sort_keys=True
     )
 
-    return hashlib.sha256(
-        serialized.encode('utf-8')
+    sha_signature=hashlib.sha256(
+        data_string.encode()
     ).hexdigest()
 
+    qr=qrcode.make(sha_signature)
 
-# ==========================================================
-# GENERATE PDF
-# ==========================================================
-
-def generate_pdf_buffer(songs, verify_url=None):
-
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=letter,
-        rightMargin=40,
-        leftMargin=40,
-        topMargin=40,
-        bottomMargin=40
-    )
-
-    story = []
-
-    styles = getSampleStyleSheet()
-
-    title_style = ParagraphStyle(
-        'TitleStyle',
-        parent=styles['Heading1'],
-        fontName='Helvetica-Bold',
-        fontSize=24,
-        textColor=colors.HexColor('#1e293b'),
-        spaceAfter=20
-    )
-
-    story.append(
-        Paragraph(
-            "Koleksi Lagu Digital",
-            title_style
-        )
-    )
-
-    story.append(Spacer(1, 10))
-
-    # ==========================================================
-    # TABEL LAGU
-    # ==========================================================
-
-    data = [[
-        "Judul Lagu",
-        "Penyanyi",
-        "Negara",
-        "Genre",
-        "Tahun"
-    ]]
-
-    for s in songs:
-        data.append([
-            s['judul_lagu'],
-            s['penyanyi'],
-            s['negara'],
-            s['genre'],
-            str(s['tahun'])
-        ])
-
-    table = Table(
-        data,
-        colWidths=[140, 120, 90, 80, 60]
-    )
-
-    table.setStyle(TableStyle([
-
-        ('BACKGROUND', (0, 0), (-1, 0),
-         colors.HexColor('#7c3aed')),
-
-        ('TEXTCOLOR', (0, 0), (-1, 0),
-         colors.whitesmoke),
-
-        ('FONTNAME', (0, 0), (-1, 0),
-         'Helvetica-Bold'),
-
-        ('FONTSIZE', (0, 0), (-1, 0), 10),
-
-        ('ALIGN', (0, 0), (-1, -1),
-         'LEFT'),
-
-        ('GRID', (0, 0), (-1, -1),
-         0.5,
-         colors.HexColor('#cbd5e1')),
-
-        ('BACKGROUND', (0, 1), (-1, -1),
-         colors.HexColor('#f8fafc')),
-
-        ('TEXTCOLOR', (0, 1), (-1, -1),
-         colors.HexColor('#334155'))
-
-    ]))
-
-    story.append(table)
-
-    story.append(Spacer(1, 40))
-
-    # ==========================================================
-    # HASH SHA-256
-    # ==========================================================
-
-    sha256_hash = calculate_songs_hash(songs)
-
-    story.append(
-        Paragraph(
-            "<b>SHA-256 Digital Signature</b>",
-            styles['Heading3']
-        )
-    )
-
-    story.append(
-        Paragraph(
-            sha256_hash,
-            styles['Code']
-        )
-    )
-
-    story.append(Spacer(1, 20))
-
-    # ==========================================================
-    # QR CODE VERIFIKASI
-    # ==========================================================
-
-    if not verify_url:
-        verify_url = "http://127.0.0.1:5000/verify/token_example"
-
-    qr_buffer = BytesIO()
-
-    qr = qrcode.QRCode(
-        version=5,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=25,
-        border=8
-    )
-
-    qr.add_data(verify_url)
-    qr.make(fit=True)
-
-    qr_image = qr.make_image(
-        fill_color="black",
-        back_color="white"
-    )
-
-    qr_image.save(
-        qr_buffer,
-        format='PNG'
-    )
-
+    qr_buffer=BytesIO()
+    qr.save(qr_buffer)
     qr_buffer.seek(0)
 
-    qr_img = Image(
-        qr_buffer,
-        width=160,
-        height=160
-    )
+    pdf_path="koleksi_lagu_signed.pdf"
 
-    jabatan_style = ParagraphStyle(
-        'Jabatan',
-        fontName='Helvetica',
-        fontSize=9,
-        alignment=2,
-        textColor=colors.HexColor('#64748b')
-    )
+    doc=SimpleDocTemplate(pdf_path)
 
-    nama_style = ParagraphStyle(
-        'Nama',
-        fontName='Helvetica-Bold',
-        fontSize=11,
-        alignment=2,
-        textColor=colors.HexColor('#1e293b')
-    )
+    styles=getSampleStyleSheet()
 
-    ttd_content = [
+    elements=[]
 
+    elements.append(
         Paragraph(
-            "Music Archive Manager",
-            jabatan_style
-        ),
-
-        Spacer(1, 8),
-
-        qr_img,
-
-        Spacer(1, 8),
-
-        Paragraph(
-            "Digital Signature Authority",
-            nama_style
+            "Data Koleksi Lagu",
+            styles["Title"]
         )
+    )
+
+    elements.append(Spacer(1,20))
+
+    table_data=[
+        [
+            "Judul Lagu",
+            "Penyanyi",
+            "Negara",
+            "Genre",
+            "Tahun"
+        ]
     ]
 
-    ttd_table = RTTable(
-        [[ttd_content]],
-        colWidths=[180]
-    )
+    for s in songs:
 
-    ttd_table.setStyle(TableStyle([
-        ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        table_data.append([
+            s["judul"],
+            s["penyanyi"],
+            s["negara"],
+            s["genre"],
+            s["tahun"]
+        ])
+
+    table=Table(table_data)
+
+    table.setStyle(TableStyle([
+        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#5546ff")),
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+        ("GRID",(0,0),(-1,-1),1,colors.grey),
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold")
     ]))
 
-    story.append(ttd_table)
+    elements.append(table)
 
-    story.append(Spacer(1, 20))
+    elements.append(Spacer(1,25))
 
-    # ==========================================================
-    # FOOTER
-    # ==========================================================
-
-    timestamp = time.strftime(
-        "%Y-%m-%d %H:%M:%S",
-        time.localtime()
-    )
-
-    footer_style = ParagraphStyle(
-        'Footer',
-        fontName='Helvetica-Oblique',
-        fontSize=8,
-        alignment=1,
-        textColor=colors.HexColor('#94a3b8')
-    )
-
-    story.append(
+    elements.append(
         Paragraph(
-            f"Dokumen Koleksi Lagu dibuat otomatis pada: {timestamp}",
-            footer_style
+            f"<b>SHA-256:</b><br/>{sha_signature}",
+            styles["BodyText"]
         )
     )
 
-    doc.build(story)
+    elements.append(Spacer(1,20))
 
-    buffer.seek(0)
+    qr_img=Image(qr_buffer, width=150, height=150)
 
-    return buffer
+    elements.append(qr_img)
+
+    elements.append(Spacer(1,10))
+
+    elements.append(
+        Paragraph(
+            "CEO Alunan Amerta",
+            styles["BodyText"]
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            "Syifa Khoirunnisa",
+            styles["Heading3"]
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            datetime.now().strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
+            styles["Italic"]
+        )
+    )
+
+    doc.build(elements)
+
+    return pdf_path
