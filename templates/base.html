@@ -1,172 +1,25 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Music Archive | Alunan Amerta</title>
+<meta charset="UTF-8">
+<title>Digital Music Archive|Alunan Amerta</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+href="{{ url_for('static',filename='css/style.css') }}">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer
+src="{{ url_for('static',filename='js/main.js') }}">
+</script>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
 
-<!-- BACKGROUND ANIMASI MUSIK -->
+<div class="container">
 
-<div class="bg-animation">
-
-    <div class="floating-note">
-        <i class="fa-solid fa-music"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-headphones"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-microphone"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-record-vinyl"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-guitar"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-drum"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-radio"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-compact-disc"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-volume-high"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-sliders"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-wave-square"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-music"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-headphones-simple"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-microphone-lines"></i>
-    </div>
-
-    <div class="floating-note">
-        <i class="fa-solid fa-record-vinyl"></i>
-    </div>
-
-    <!-- Partikel Neon -->
-
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
-    <div class="music-particle"></div>
+{% block content %}
+{% endblock %}
 
 </div>
-
-<div class="app-container">
-
-    <header class="app-header">
-
-        <div class="logo">
-            <i class="fa-solid fa-record-vinyl logo-icon"></i>
-            <h1>🎵<span>Alunan</span>Amerta</h1>
-        </div>
-
-        <p class="subtitle">
-            Sistem Koleksi Lagu dengan Verifikasi QR Code dan Digital Signature SHA-256
-        </p>
-
-    </header>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}"
-                     id="alert-{{ loop.index }}">
-
-                    <div class="alert-content">
-
-                        {% if category == 'success' %}
-                            <i class="fa-solid fa-circle-check alert-icon"></i>
-                        {% else %}
-                            <i class="fa-solid fa-circle-exclamation alert-icon"></i>
-                        {% endif %}
-
-                        <span class="alert-text">
-                            {{ message }}
-                        </span>
-
-                    </div>
-
-                    <button class="close-alert"
-                            onclick="dismissAlert('alert-{{ loop.index }}')">
-                        &times;
-                    </button>
-
-                </div>
-                {% endfor %}
-
-            </div>
-        {% endif %}
-    {% endwith %}
-
-    <main class="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <footer class="app-footer">
-        <p>
-            © 2026 🎵 Alunan Amerta |
-            Sistem Keamanan Data Koleksi Lagu
-            menggunakan SHA-256 Digital Signature.
-        </p>
-    </footer>
-
-</div>
-
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>
