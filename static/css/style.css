@@ -1,4 +1,4 @@
-﻿* {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,7 +13,7 @@ body {
 }
 
 /* ============================================ */
-/* ANIMASI BACKGROUND BERTEMA BUKU & PENGETAHUAN */
+/* ANIMASI BACKGROUND BERTEMA MUSIK */
 /* ============================================ */
 
 .bg-animation {
@@ -27,53 +27,41 @@ body {
     pointer-events: none;
 }
 
-/* Buku berterbangan */
-.floating-book {
+/* Not musik berterbangan */
+.floating-music {
     position: absolute;
-    opacity: 0.3;
-    animation: floatBook 20s infinite ease-in-out;
+    opacity: 0.5;
+    animation: floatMusic 20s infinite linear;
     font-size: 40px;
+    filter: drop-shadow(0 0 8px currentColor);
 }
 
-/* Variasi warna untuk setiap buku */
-.floating-book:nth-child(odd) { color: #818cf8; }
-.floating-book:nth-child(even) { color: #c084fc; }
-.floating-book:nth-child(3n) { color: #34d399; }
-.floating-book:nth-child(5n) { color: #fbbf24; }
-.floating-book:nth-child(7n) { color: #f472b6; }
+/* Warna Neon Musik */
+.floating-music:nth-child(1) { color:#ff00ff; }
+.floating-music:nth-child(2) { color:#00ffff; }
+.floating-music:nth-child(3) { color:#39ff14; }
+.floating-music:nth-child(4) { color:#ff6600; }
+.floating-music:nth-child(5) { color:#ffff00; }
 
-.floating-book:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; animation-duration: 18s; font-size: 35px; }
-.floating-book:nth-child(2) { top: 20%; left: 85%; animation-delay: 2s; animation-duration: 22s; font-size: 50px; }
-.floating-book:nth-child(3) { top: 50%; left: 15%; animation-delay: 5s; animation-duration: 25s; font-size: 30px; }
-.floating-book:nth-child(4) { top: 70%; left: 75%; animation-delay: 1s; animation-duration: 20s; font-size: 45px; }
-.floating-book:nth-child(5) { top: 85%; left: 30%; animation-delay: 7s; animation-duration: 28s; font-size: 38px; }
-.floating-book:nth-child(6) { top: 40%; left: 50%; animation-delay: 3s; animation-duration: 24s; font-size: 42px; }
-.floating-book:nth-child(7) { top: 15%; left: 45%; animation-delay: 8s; animation-duration: 19s; font-size: 28px; }
-.floating-book:nth-child(8) { top: 60%; left: 92%; animation-delay: 4s; animation-duration: 26s; font-size: 48px; }
-.floating-book:nth-child(9) { top: 30%; left: 70%; animation-delay: 6s; animation-duration: 21s; font-size: 32px; }
-.floating-book:nth-child(10) { top: 75%; left: 10%; animation-delay: 9s; animation-duration: 23s; font-size: 55px; }
-.floating-book:nth-child(11) { top: 55%; left: 60%; animation-delay: 2.5s; animation-duration: 27s; font-size: 36px; }
-.floating-book:nth-child(12) { top: 5%; left: 25%; animation-delay: 4.5s; animation-duration: 29s; font-size: 40px; }
-.floating-book:nth-child(13) { top: 90%; left: 55%; animation-delay: 10s; animation-duration: 31s; font-size: 44px; }
-.floating-book:nth-child(14) { top: 45%; left: 8%; animation-delay: 11s; animation-duration: 33s; font-size: 38px; }
-.floating-book:nth-child(15) { top: 80%; left: 88%; animation-delay: 12s; animation-duration: 35s; font-size: 50px; }
-
-@keyframes floatBook {
+@keyframes floatMusic {
     0% {
         transform: translateY(100vh) rotate(0deg);
         opacity: 0;
     }
-    10% {
-        opacity: 0.3;
+    20% {
+        opacity: 0.8;
     }
-    90% {
-        opacity: 0.3;
+    80% {
+        opacity: 0.8;
     }
     100% {
-        transform: translateY(-20vh) rotate(360deg);
+        transform: translateY(-150px) rotate(360deg);
         opacity: 0;
     }
 }
+
+
+
 
 /* Partikel pengetahuan */
 .knowledge-particle {
@@ -178,18 +166,19 @@ body::before {
 }
 
 .logo-icon {
-    font-size: 36px;
-    color: #a855f7;
+    font-size: 42px;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
 }
 
 .logo h1 {
-    font-size: 32px;
-    font-weight: 700;
     color: white;
+    font-size: 36px;
 }
 
 .logo h1 span {
-    color: #a855f7;
+    color: #00ffff;
+    text-shadow: 0 0 15px #00ffff;
 }
 
 .subtitle {
@@ -199,13 +188,13 @@ body::before {
 
 /* Kartu utama transparan */
 .card {
-    background: rgba(15, 23, 42, 0.5);  /* transparan */
+    background: rgba(20,20,35,0.6);
     backdrop-filter: blur(12px);
     border-radius: 24px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0,255,255,0.3);
+    box-shadow:
+        0 0 15px rgba(0,255,255,.15),
+        0 0 30px rgba(255,0,255,.1);
 }
 
 /* Header kartu transparan */
@@ -257,23 +246,21 @@ body::before {
 }
 
 .btn-primary {
-    background: #a855f7;
-    color: white;
+    background: linear-gradient(135deg,#ff00ff,#00ffff);
+    color:white;
+    font-weight:bold;
+    box-shadow:0 0 15px rgba(255,0,255,.5);
 }
 
 .btn-primary:hover {
-    background: #9333ea;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow:0 0 25px rgba(0,255,255,.7);
 }
 
 .btn-secondary {
-    background: #10b981;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #059669;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg,#39ff14,#00ffff);
+    color:black;
+    font-weight:bold;
 }
 
 .btn-outline {
@@ -300,23 +287,17 @@ body::before {
 }
 
 .data-table th {
-    text-align: left;
-    padding: 16px 12px;
-    background: rgba(30, 41, 59, 0.8);
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
-    font-size: 13px;
+    background: rgba(0,255,255,0.15);
+    color: #00ffff;
+    font-weight: 700;
 }
 
 .data-table td {
-    padding: 14px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    color: white;
 }
 
 .table-row:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,0.08);
 }
 
 .text-center {
