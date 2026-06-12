@@ -30,12 +30,12 @@ def generate_signed_pdf():
         sort_keys=True
     )
 
-    sha_signature=hashlib.sha256(
-        data_string.encode()
-    ).hexdigest()
-
-    qr=qrcode.make(sha_signature)
-
+    verify_url = (
+    f"pemrograman-kriptografi-production-digitalmusic-syifa.up.railway.app/verify/{sha_signature}"
+    )
+    
+    qr = qrcode.make(verify_url)
+    
     qr_buffer=BytesIO()
     qr.save(qr_buffer)
     qr_buffer.seek(0)
