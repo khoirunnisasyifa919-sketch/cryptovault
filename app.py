@@ -33,21 +33,44 @@ def init_db():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS books (
-            id TEXT PRIMARY KEY,
-            judul TEXT NOT NULL,
-            penulis TEXT NOT NULL,
-            penerbit TEXT NOT NULL
-        )
+    CREATE TABLE IF NOT EXISTS songs (
+    id TEXT PRIMARY KEY,
+    judul_lagu TEXT NOT NULL,
+    penyanyi TEXT NOT NULL,
+    negara TEXT NOT NULL,
+    genre TEXT NOT NULL,
+    tahun INTEGER NOT NULL
+    )
     ''')
     conn.commit()
     
     cursor.execute('SELECT COUNT(*) FROM books')
     if cursor.fetchone()[0] == 0:
-        sample_books = [
-            (str(uuid.uuid4()), 'Laskar Pelangi', 'Andrea Hirata', 'Bentang Pustaka'),
-            (str(uuid.uuid4()), 'Bumi Manusia', 'Pramoedya Ananta Toer', 'Lentera Dipantara'),
-            (str(uuid.uuid4()), 'Filosofi Kopi', 'Dee Lestari', 'Truewriting')
+        sample_songs = [
+        (
+        str(uuid.uuid4()),
+        "Perfect",
+        "Ed Sheeran",
+        "Inggris",
+        "Pop",
+        2017
+        ),
+        (
+            str(uuid.uuid4()),
+            "Shape of You",
+            "Ed Sheeran",
+            "Inggris",
+            "Pop",
+            2017
+        ),
+        (
+            str(uuid.uuid4()),
+            "Hati-Hati di Jalan",
+            "Tulus",
+            "Indonesia",
+            "Pop",
+            2022
+        )
         ]
         cursor.executemany('INSERT INTO books (id, judul, penulis, penerbit) VALUES (?, ?, ?, ?)', sample_books)
         conn.commit()
