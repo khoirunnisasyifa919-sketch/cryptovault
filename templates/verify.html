@@ -2,15 +2,21 @@
 
 {% block content %}
 
-<div class="success">
+<div class="verify-card">
 
-<h1>✓ Data Lagu Asli & Terverifikasi</h1>
+<h1>✓ Data Koleksi Lagu Valid & Terverifikasi</h1>
 
 <p>
 Digital Signature SHA-256 cocok
-dan data lagu tidak berubah.
+dan data koleksi lagu tidak berubah.
 </p>
 
+<p>
+SHA-256:
+</p>
+
+<code>{{ hash }}</code>
+  
 </div>
 
 {% endblock %}
