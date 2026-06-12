@@ -91,40 +91,13 @@ def preview():
     )
 
 @app.route("/export")
-def export_pdf_route():
+def export_pdf():
 
     pdf_path = generate_signed_pdf()
 
     return send_file(
         pdf_path,
-        mimetype="application/pdf",
-        as_attachment=True,
-        download_name="koleksi_lagu_signed.pdf"
-    )
-@app.route("/verify/<signature>")
-def verify(signature):
-
-    songs = load_songs()
-
-    import hashlib
-    import json
-
-    current_hash = hashlib.sha256(
-        json.dumps(
-            songs,
-            sort_keys=True
-        ).encode()
-    ).hexdigest()
-
-    if signature == current_hash:
-        return render_template(
-            "verify.html",
-            hash=signature
-        )
-
-    return render_template(
-        "verify_error.html",
-        hash=signature
+        as_attachment=True
     )
 
 if __name__ == "__main__":
