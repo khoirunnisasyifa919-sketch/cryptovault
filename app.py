@@ -1,297 +1,256 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
-from flask_sqlalchemy import SQLAlchemy
-import hashlib
-import barcode
-import qrcode
-from barcode.writer import ImageWriter
-from reportlab.platypus import Image
 import os
-from reportlab.platypus import SimpleDocTemplate, Table
-from reportlab.lib import colors
-from reportlab.platypus import Spacer
-import io
-from datetime import datetime
+import sqlite3
+import uuid
+import base64
+import time
+import secrets
+from io import BytesIO
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, abort
+import qrcode
+from export_pdf import calculate_books_hash, generate_pdf_buffer
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'flask-book-manager-secret-key-12345')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Dictionary untuk menyimpan token (untuk production sebaiknya pakai database)
+download_tokens = {}
 
-db = SQLAlchemy(app)
+if os.environ.get('VERCEL'):
+    DATABASE = '/tmp/books.db'
+else:
+    DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'books.db')
 
-# ==========================
-# MODEL
-# ==========================
+def get_db():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-class Buku(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    judul = db.Column(db.String(200))
-    penulis = db.Column(db.String(200))
-    penerbit = db.Column(db.String(200))
+def init_db():
+    db_dir = os.path.dirname(DATABASE)
+    if db_dir and not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS books (
+            id TEXT PRIMARY KEY,
+            judul TEXT NOT NULL,
+            penulis TEXT NOT NULL,
+            penerbit TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    
+    cursor.execute('SELECT COUNT(*) FROM books')
+    if cursor.fetchone()[0] == 0:
+        sample_books = [
+            (str(uuid.uuid4()), 'Laskar Pelangi', 'Andrea Hirata', 'Bentang Pustaka'),
+            (str(uuid.uuid4()), 'Bumi Manusia', 'Pramoedya Ananta Toer', 'Lentera Dipantara'),
+            (str(uuid.uuid4()), 'Filosofi Kopi', 'Dee Lestari', 'Truewriting')
+        ]
+        cursor.executemany('INSERT INTO books (id, judul, penulis, penerbit) VALUES (?, ?, ?, ?)', sample_books)
+        conn.commit()
+    
+    conn.close()
 
-with app.app_context():
-    db.create_all()
+init_db()
 
-# ==========================
-# SHA256 SIGNATURE
-# ==========================
-
-def generate_signature():
-    semua_buku = Buku.query.all()
-
-    data = ""
-
-    for buku in semua_buku:
-        data += buku.judul
-        data += buku.penulis
-        data += buku.penerbit
-
-    return hashlib.sha256(data.encode()).hexdigest()
-
-def generate_barcode(signature):
-
-    os.makedirs("static/barcode", exist_ok=True)
-
-    verification_url = (
-    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
-    + signature
-    )
-
-
-    code128 = barcode.get(
-        "code128",
-        verification_url,
-        writer=ImageWriter()
-    )
-
-    filename = f"static/barcode/{signature}"
-
-    code128.save(filename)
-
-    return filename + ".png"
-
-def generate_qr(signature):
-
-    os.makedirs("static/qr", exist_ok=True)
-
-    filename = f"static/qr/{signature}.png"
-
-    verification_url = (
-    "https://pemrogramankriptografi-production-c48c-syifa.up.railway.app/verify/"
-    + signature
-    )
-
-
-    qr = qrcode.make(
-        verification_url
-    )
-
-    qr.save(filename)
-
-    return filename
-
-
-# ==========================
-# HOME
-# ==========================
+def generate_download_token():
+    """Generate token unik untuk download"""
+    return secrets.token_urlsafe(32)
 
 @app.route('/')
 def index():
-    buku = Buku.query.all()
+    conn = get_db()
+    books = conn.execute('SELECT * FROM books').fetchall()
+    conn.close()
+    return render_template('index.html', books=books)
 
-    return render_template(
-        'index.html',
-        buku=buku,
-        total=len(buku)
-    )
-
-# ==========================
-# TAMBAH
-# ==========================
-
-@app.route('/tambah', methods=['GET','POST'])
-def tambah():
-
+@app.route('/add', methods=['GET', 'POST'])
+def add_book():
     if request.method == 'POST':
+        judul = request.form.get('judul', '').strip()
+        penulis = request.form.get('penulis', '').strip()
+        penerbit = request.form.get('penerbit', '').strip()
+        
+        if not judul or not penulis or not penerbit:
+            flash('Semua field harus diisi!', 'danger')
+            return redirect(url_for('add_book'))
+        
+        book_id = str(uuid.uuid4())
+        
+        try:
+            conn = get_db()
+            conn.execute('INSERT INTO books (id, judul, penulis, penerbit) VALUES (?, ?, ?, ?)', (book_id, judul, penulis, penerbit))
+            conn.commit()
+            conn.close()
+            flash('Buku berhasil ditambahkan!', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'Gagal menambahkan buku: {str(e)}', 'danger')
+            return redirect(url_for('add_book'))
+    
+    return render_template('add.html')
 
-        buku = Buku(
-            judul=request.form['judul'],
-            penulis=request.form['penulis'],
-            penerbit=request.form['penerbit']
-        )
-
-        db.session.add(buku)
-        db.session.commit()
-
-        return redirect('/')
-
-    return render_template('tambah.html')
-
-# ==========================
-# EDIT
-# ==========================
-
-@app.route('/edit/<int:id>', methods=['GET','POST'])
-def edit(id):
-
-    buku = Buku.query.get_or_404(id)
-
+@app.route('/edit/<book_id>', methods=['GET', 'POST'])
+def edit_book(book_id):
+    conn = get_db()
+    book = conn.execute('SELECT * FROM books WHERE id = ?', (book_id,)).fetchone()
+    conn.close()
+    
+    if not book:
+        flash('Buku tidak ditemukan!', 'danger')
+        return redirect(url_for('index'))
+    
     if request.method == 'POST':
+        judul = request.form.get('judul', '').strip()
+        penulis = request.form.get('penulis', '').strip()
+        penerbit = request.form.get('penerbit', '').strip()
+        
+        if not judul or not penulis or not penerbit:
+            flash('Semua field harus diisi!', 'danger')
+            return redirect(url_for('edit_book', book_id=book_id))
+        
+        try:
+            conn = get_db()
+            conn.execute('UPDATE books SET judul = ?, penulis = ?, penerbit = ? WHERE id = ?', (judul, penulis, penerbit, book_id))
+            conn.commit()
+            conn.close()
+            flash('Buku berhasil diperbarui!', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'Gagal memperbarui buku: {str(e)}', 'danger')
+            return redirect(url_for('edit_book', book_id=book_id))
+    
+    return render_template('edit.html', book=book)
 
-        buku.judul = request.form['judul']
-        buku.penulis = request.form['penulis']
-        buku.penerbit = request.form['penerbit']
-
-        db.session.commit()
-
-        return redirect('/')
-
-    return render_template('edit.html', buku=buku)
-
-# ==========================
-# HAPUS
-# ==========================
-
-@app.route('/hapus/<int:id>')
-def hapus(id):
-
-    buku = Buku.query.get_or_404(id)
-
-    db.session.delete(buku)
-    db.session.commit()
-
-    return redirect('/')
-
-# ==========================
-# EXPORT PDF
-# ==========================
+@app.route('/delete/<book_id>', methods=['POST'])
+def delete_book(book_id):
+    try:
+        conn = get_db()
+        conn.execute('DELETE FROM books WHERE id = ?', (book_id,))
+        conn.commit()
+        conn.close()
+        flash('Buku berhasil dihapus!', 'success')
+    except Exception as e:
+        flash(f'Gagal menghapus buku: {str(e)}', 'danger')
+    
+    return redirect(url_for('index'))
 
 @app.route('/export')
-def export_pdf():
+def preview_export():
+    try:
+        conn = get_db()
+        books = conn.execute('SELECT * FROM books').fetchall()
+        conn.close()
+        
+        if not books:
+            flash('Tidak ada data buku untuk diexport!', 'danger')
+            return redirect(url_for('index'))
+        
+        books_list = [dict(b) for b in books]
+        doc_hash = calculate_books_hash(books_list)
+        
+        # Generate token unik
+        token = generate_download_token()
+        
+        # Simpan data dengan token
+        download_tokens[token] = {
+            'books': books_list,
+            'hash': doc_hash,
+            'timestamp': time.time()
+        }
+        
+        # Buat URL verifikasi untuk QR code
+        base_url = request.host_url.rstrip('/')
+        qr_url = f"{base_url}/verify/{token}"
+        
+        # Generate QR code dari URL (bukan hash)
+        qr = qrcode.QRCode(
+            version=5,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=25,
+            border=8
+        )
+        qr.add_data(qr_url)
+        qr.make(fit=True)
+        qr_image = qr.make_image(fill_color="black", back_color="white")
+        
+        qr_buffer = BytesIO()
+        qr_image.save(qr_buffer, format='PNG')
+        qr_base64 = base64.b64encode(qr_buffer.getvalue()).decode('utf-8')
+        
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        
+        return render_template('preview.html', 
+                               books=books_list, 
+                               qr_base64=qr_base64, 
+                               timestamp=timestamp,
+                               qr_url=qr_url)
+    except Exception as e:
+        flash(f'Gagal memuat preview: {str(e)}', 'danger')
+        return redirect(url_for('index'))
 
-    buffer = io.BytesIO()
+@app.route('/verify/<token>')
+def verify_document(token):
+    """Halaman verifikasi saat QR code di-scan (seperti sertifikat digital)"""
+    data = download_tokens.get(token)
+    
+    if not data:
+        return render_template('verify_error.html'), 404
+    
+    books = data['books']
+    doc_hash = data['hash']
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data['timestamp']))
+    
+    # Hitung ulang hash dari data saat ini untuk verifikasi integritas
+    current_hash = calculate_books_hash(books)
+    is_valid = (current_hash == doc_hash)
+    
+    return render_template('verify.html', 
+                          books=books, 
+                          doc_hash=doc_hash, 
+                          is_valid=is_valid,
+                          timestamp=timestamp,
+                          token=token)
 
-    pdf = SimpleDocTemplate(buffer)
+@app.route('/download/<token>')
+def download_from_token(token):
+    """Download PDF langsung dari token"""
+    data = download_tokens.get(token)
+    
+    if not data:
+        abort(404)
+    
+    # Generate PDF dari data yang tersimpan
+    pdf_buffer = generate_pdf_buffer(data['books'])
+    
+    return send_file(pdf_buffer, 
+                    mimetype='application/pdf', 
+                    as_attachment=True, 
+                    download_name='sertifikat_data_buku.pdf')
 
-    data = [
-        ['Judul', 'Penulis', 'Penerbit']
-    ]
+@app.route('/export/download')
+def download_pdf():
+    try:
+        conn = get_db()
+        books = conn.execute('SELECT * FROM books').fetchall()
+        conn.close()
+        
+        books_list = [dict(b) for b in books]
+        
+        # Buat URL verifikasi untuk PDF
+        from flask import request
+        base_url = request.host_url.rstrip('/')
+        token = "example_token"  # Untuk download tanpa verifikasi, gunakan token dummy
+        
+        pdf_buffer = generate_pdf_buffer(books_list, verify_url=f"{base_url}/verify/{token}")
+        
+        return send_file(pdf_buffer, mimetype='application/pdf', as_attachment=True, download_name='data_buku_signed.pdf')
+    except Exception as e:
+        flash(f'Gagal mendownload PDF: {str(e)}', 'danger')
+        return redirect(url_for('index'))
 
-    buku = Buku.query.all()
-
-    for b in buku:
-
-        data.append([
-            b.judul,
-            b.penulis,
-            b.penerbit
-        ])
-
-    signature = generate_signature()
-
-    tabel = Table(data)
-
-    tabel.setStyle([
-        ('GRID',(0,0),(-1,-1),1,colors.black),
-        ('BACKGROUND',(0,0),(-1,0),colors.lightgrey)
-    ])
-
-    barcode_file = generate_barcode(signature)
-
-    barcode_img = Image(
-        barcode_file,
-        width=350,
-        height=80
-    )
-
-    qr_file = generate_qr(signature)
-
-    qr_img = Image(
-        qr_file,
-        width=120,
-        height=120
-    )
-
-    signature_table = Table([
-        ["SHA-256 Signature"],
-        [signature]
-    ])
-
-    signature_table.setStyle([
-        ('GRID',(0,0),(-1,-1),1,colors.black),
-        ('BACKGROUND',(0,0),(-1,0),colors.lightgrey)
-    ])
-
-    elements = [
-        tabel,
-        Spacer(1, 20),
-        signature_table,
-        Spacer(1, 20),
-        barcode_img,
-        Spacer(1, 20),
-        qr_img
-    ]
-
-    pdf.build(elements)
-
-    buffer.seek(0)
-
-    return send_file(
-        buffer,
-        as_attachment=True,
-        download_name='data_buku_signed.pdf',
-        mimetype='application/pdf'
-    )
-
-# ==========================
-# SERTIFIKAT
-# ==========================
-
-@app.route('/sertifikat')
-def sertifikat():
-
-    buku = Buku.query.all()
-
-    signature = generate_signature()
-
-    waktu = datetime.now().strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
-
-    return render_template(
-        'sertifikat.html',
-        buku=buku,
-        signature=signature,
-        waktu=waktu
-    )
-
-# ==========================
-# VERIFY
-# ==========================
-
-@app.route('/verify/<signature>')
-def verify(signature):
-
-    current_signature = generate_signature()
-
-    status = (
-        "VALID"
-        if signature == current_signature
-        else "TIDAK VALID"
-    )
-    buku = Buku.query.all()
-
-    waktu = datetime.now().strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
-
-    return render_template(
-        'verify.html',
-        status=status,
-        signature=current_signature,
-        buku=buku,
-        waktu=waktu
-    )
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
