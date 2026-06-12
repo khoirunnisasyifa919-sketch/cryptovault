@@ -1,716 +1,171 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* ============================================ */
-/* ANIMASI BACKGROUND BERTEMA MUSIK */
-/* ============================================ */
-
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-/* Not musik berterbangan */
-.floating-music {
-    position: absolute;
-    opacity: 0.5;
-    animation: floatMusic 20s infinite linear;
-    font-size: 40px;
-    filter: drop-shadow(0 0 8px currentColor);
-}
-
-/* Warna Neon Musik */
-.floating-music:nth-child(1) { color:#ff00ff; }
-.floating-music:nth-child(2) { color:#00ffff; }
-.floating-music:nth-child(3) { color:#39ff14; }
-.floating-music:nth-child(4) { color:#ff6600; }
-.floating-music:nth-child(5) { color:#ffff00; }
-
-@keyframes floatMusic {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-    20% {
-        opacity: 0.8;
-    }
-    80% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-150px) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-
-
-
-/* Partikel pengetahuan */
-.knowledge-particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 8s infinite ease-in-out;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-}
-
-.knowledge-particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; width: 4px; height: 4px; }
-.knowledge-particle:nth-child(2) { top: 60%; left: 35%; animation-delay: 1s; width: 6px; height: 6px; }
-.knowledge-particle:nth-child(3) { top: 40%; left: 70%; animation-delay: 2s; width: 5px; height: 5px; }
-.knowledge-particle:nth-child(4) { top: 75%; left: 50%; animation-delay: 3s; width: 8px; height: 8px; }
-.knowledge-particle:nth-child(5) { top: 10%; left: 80%; animation-delay: 4s; width: 4px; height: 4px; }
-.knowledge-particle:nth-child(6) { top: 85%; left: 15%; animation-delay: 5s; width: 7px; height: 7px; }
-.knowledge-particle:nth-child(7) { top: 30%; left: 55%; animation-delay: 6s; width: 5px; height: 5px; }
-.knowledge-particle:nth-child(8) { top: 65%; left: 90%; animation-delay: 7s; width: 9px; height: 9px; }
-.knowledge-particle:nth-child(9) { top: 50%; left: 5%; animation-delay: 1.5s; width: 5px; height: 5px; }
-.knowledge-particle:nth-child(10) { top: 95%; left: 40%; animation-delay: 2.5s; width: 7px; height: 7px; }
-.knowledge-particle:nth-child(11) { top: 15%; left: 95%; animation-delay: 3.5s; width: 4px; height: 4px; }
-.knowledge-particle:nth-child(12) { top: 45%; left: 25%; animation-delay: 4.5s; width: 8px; height: 8px; }
-.knowledge-particle:nth-child(13) { top: 5%; left: 50%; animation-delay: 5.5s; width: 5px; height: 5px; }
-.knowledge-particle:nth-child(14) { top: 70%; left: 12%; animation-delay: 6.5s; width: 6px; height: 6px; }
-.knowledge-particle:nth-child(15) { top: 25%; left: 88%; animation-delay: 7.5s; width: 5px; height: 5px; }
-
-@keyframes particleFloat {
-    0% {
-        transform: translateY(0) scale(0);
-        opacity: 0;
-    }
-    20% {
-        opacity: 0.8;
-    }
-    80% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-300px) scale(1.5);
-        opacity: 0;
-    }
-}
-
-/* Efek gradasi dinamis di background */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 80%);
-    z-index: 0;
-    pointer-events: none;
-    animation: gradientShift 15s infinite alternate;
-}
-
-@keyframes gradientShift {
-    0% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0.8;
-        transform: scale(1.3);
-    }
-}
-
-/* ============================================ */
-/* KARTU & TABEL DIBUAT TRANSPARAN */
-/* ============================================ */
-
-.app-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-}
-
-/* Header transparan */
-.app-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 30px 20px;
-    background: rgba(15, 23, 42, 0.7);  /* transparan gelap */
-    border-radius: 24px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.logo-icon {
-    font-size: 42px;
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-
-.logo h1 {
-    color: white;
-    font-size: 36px;
-}
-
-.logo h1 span {
-    color: #00ffff;
-    text-shadow: 0 0 15px #00ffff;
-}
-
-.subtitle {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-}
-
-/* Kartu utama transparan */
-.card {
-    background: rgba(20,20,35,0.6);
-    backdrop-filter: blur(12px);
-    border-radius: 24px;
-    border: 1px solid rgba(0,255,255,0.3);
-    box-shadow:
-        0 0 15px rgba(0,255,255,.15),
-        0 0 30px rgba(255,0,255,.1);
-}
-
-/* Header kartu transparan */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 30px;
-    background: rgba(30, 41, 59, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    flex-wrap: wrap;
-    gap: 16px;
-}
-
-.header-left h2 {
-    font-size: 20px;
-    color: white;
-    margin-bottom: 4px;
-}
-
-.header-desc {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.badge {
-    background: #a855f7;
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-left: 12px;
-}
-
-/* Tombol-tombol */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    border: none;
-}
+body{
 
-.btn-primary {
-    background: linear-gradient(135deg,#ff00ff,#00ffff);
-    color:white;
-    font-weight:bold;
-    box-shadow:0 0 15px rgba(255,0,255,.5);
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow:0 0 25px rgba(0,255,255,.7);
-}
+font-family:Inter,sans-serif;
 
-.btn-secondary {
-    background: linear-gradient(135deg,#39ff14,#00ffff);
-    color:black;
-    font-weight:bold;
-}
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e1b4b,
+#020617
+);
 
-.btn-outline {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-}
+min-height:100vh;
 
-.btn-outline:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #a855f7;
-    color: #a855f7;
-}
+color:white;
 
-/* Tabel transparan */
-.table-container {
-    padding: 0 30px 30px 30px;
-    overflow-x: auto;
+padding:40px;
 }
 
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
+.container{
+width:95%;
+margin:auto;
 }
 
-.data-table th {
-    background: rgba(0,255,255,0.15);
-    color: #00ffff;
-    font-weight: 700;
-}
+.header{
 
-.data-table td {
-    color: white;
-}
+text-align:center;
 
-.table-row:hover {
-    background: rgba(255,255,255,0.08);
-}
+padding:50px;
 
-.text-center {
-    text-align: center;
-}
+border-radius:20px;
 
-.text-muted {
-    color: rgba(255, 255, 255, 0.5);
-}
+background:
+rgba(255,255,255,.05);
 
-.font-bold {
-    font-weight: 600;
-}
+backdrop-filter:blur(10px);
 
-.text-dark {
-    color: white;
+margin-bottom:30px;
 }
 
-/* Tombol aksi */
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
+.header h1{
 
-.btn-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s;
-    cursor: pointer;
-    border: none;
-}
+font-size:60px;
 
-.btn-edit {
-    background: rgba(79, 70, 229, 0.8);
-    color: white;
-}
+background:
+linear-gradient(
+90deg,
+#9b5cff,
+#ff00ff
+);
 
-.btn-edit:hover {
-    background: #4f46e5;
-    transform: scale(1.05);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-.btn-delete {
-    background: rgba(239, 68, 68, 0.8);
-    color: white;
-}
+.card{
 
-.btn-delete:hover {
-    background: #ef4444;
-    transform: scale(1.05);
-}
+background:
+rgba(255,255,255,.05);
 
-/* Form transparan */
-.card-body {
-    padding: 30px;
-}
+padding:30px;
 
-.modern-form {
-    max-width: 600px;
-    margin: 0 auto;
+border-radius:20px;
 }
 
-.form-group {
-    margin-bottom: 24px;
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
 }
 
-.form-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: white;
-    font-size: 14px;
-}
+th{
 
-.form-group input {
-    width: 100%;
-    padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    font-size: 14px;
-    transition: all 0.2s;
-    color: white;
-}
+background:#5546ff;
 
-.form-group input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+padding:15px;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #a855f7;
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-}
+td{
 
-.form-actions {
-    display: flex;
-    gap: 16px;
-    justify-content: flex-end;
-    margin-top: 32px;
-}
+padding:15px;
 
-/* Empty state transparan */
-.empty-state {
-    text-align: center;
-    padding: 60px 30px;
+border-bottom:
+1px solid rgba(255,255,255,.1);
 }
 
-.empty-icon {
-    font-size: 64px;
-    color: rgba(255, 255, 255, 0.3);
+.action{
+margin:20px 0;
 }
 
-.empty-state h3 {
-    font-size: 20px;
-    color: white;
-    margin-bottom: 12px;
-}
+.btn-add,
+.btn-export{
 
-.empty-state p {
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 24px;
-}
+padding:12px 20px;
 
-/* Footer transparan */
-.app-footer {
-    text-align: center;
-    padding: 24px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
-    background: rgba(15, 23, 42, 0.5);
-    border-radius: 16px;
-    margin-top: 20px;
-    backdrop-filter: blur(8px);
-}
+text-decoration:none;
 
-/* Flash messages */
-.flash-messages {
-    margin-bottom: 20px;
-}
+border-radius:12px;
 
-.alert {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(8px);
+font-weight:bold;
 }
 
-.alert-success {
-    background: rgba(16, 185, 129, 0.9);
-    color: white;
+.btn-add{
+background:#c026d3;
+color:white;
 }
 
-.alert-danger {
-    background: rgba(239, 68, 68, 0.9);
-    color: white;
+.btn-export{
+background:#22c55e;
+color:black;
 }
 
-.alert-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.form-box{
 
-.alert-icon {
-    font-size: 18px;
-}
+max-width:600px;
 
-.close-alert {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    opacity: 0.7;
-}
+margin:auto;
 
-.close-alert:hover {
-    opacity: 1;
-}
+background:
+rgba(255,255,255,.05);
 
-/* Preview PDF card (tetap putih untuk cetak) */
-.preview-card .pdf-page {
-    max-width: 800px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
+padding:30px;
 
-.preview-card table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
+border-radius:20px;
 }
 
-.preview-card table th {
-    background-color: #4f46e5 !important;
-    color: white !important;
-    padding: 10px !important;
-    text-align: left !important;
-    border: 1px solid #4f46e5 !important;
-    font-weight: bold !important;
-}
+input{
 
-.preview-card table td {
-    padding: 8px !important;
-    border: 1px solid #cbd5e1 !important;
-    vertical-align: top !important;
-}
+width:100%;
 
-/* Responsive */
-@media (max-width: 768px) {
-    .card-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .header-actions {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .btn {
-        justify-content: center;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-        gap: 4px;
-    }
-}
-/* ============================================ */
-/* BACKGROUND NEON - WARNA TERANG & GLOWING */
-/* ============================================ */
-
-/* Background utama diubah jadi lebih gelap agar neon kontras */
-body {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%) !important;
-}
+padding:12px;
 
-/* Buku berterbangan dengan warna NEON */
-.floating-book {
-    position: absolute;
-    opacity: 0.5;
-    animation: floatBook 20s infinite ease-in-out;
-    font-size: 40px;
-    filter: drop-shadow(0 0 8px currentColor);
-}
+margin-top:10px;
 
-/* WARNA NEON UNTUK SETIAP BUKU */
-.floating-book:nth-child(1) { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }  /* NEON PINK */
-.floating-book:nth-child(2) { color: #00ffff; text-shadow: 0 0 10px #00ffff; }  /* NEON CYAN */
-.floating-book:nth-child(3) { color: #39ff14; text-shadow: 0 0 10px #39ff14; }  /* NEON GREEN */
-.floating-book:nth-child(4) { color: #ff6600; text-shadow: 0 0 10px #ff6600; }  /* NEON ORANGE */
-.floating-book:nth-child(5) { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
-.floating-book:nth-child(6) { color: #ffff00; text-shadow: 0 0 10px #ffff00; }  /* NEON YELLOW */
-.floating-book:nth-child(7) { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
-.floating-book:nth-child(8) { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
-.floating-book:nth-child(9) { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
-.floating-book:nth-child(10) { color: #ff6600; text-shadow: 0 0 10px #ff6600; }
-.floating-book:nth-child(11) { color: #ffff00; text-shadow: 0 0 10px #ffff00; }
-.floating-book:nth-child(12) { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
-.floating-book:nth-child(13) { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
-.floating-book:nth-child(14) { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
-.floating-book:nth-child(15) { color: #ff6600; text-shadow: 0 0 10px #ff6600; }
-
-/* Partikel pengetahuan - NEON */
-.knowledge-particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 8s infinite ease-in-out;
-    box-shadow: 0 0 15px currentColor;
-}
+margin-bottom:15px;
 
-/* WARNA NEON UNTUK PARTIKEL */
-.knowledge-particle:nth-child(1) { background: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
-.knowledge-particle:nth-child(2) { background: #00ffff; box-shadow: 0 0 15px #00ffff; }
-.knowledge-particle:nth-child(3) { background: #39ff14; box-shadow: 0 0 15px #39ff14; }
-.knowledge-particle:nth-child(4) { background: #ff6600; box-shadow: 0 0 15px #ff6600; }
-.knowledge-particle:nth-child(5) { background: #ffff00; box-shadow: 0 0 15px #ffff00; }
-.knowledge-particle:nth-child(6) { background: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
-.knowledge-particle:nth-child(7) { background: #00ffff; box-shadow: 0 0 15px #00ffff; }
-.knowledge-particle:nth-child(8) { background: #39ff14; box-shadow: 0 0 15px #39ff14; }
-.knowledge-particle:nth-child(9) { background: #ff6600; box-shadow: 0 0 15px #ff6600; }
-.knowledge-particle:nth-child(10) { background: #ffff00; box-shadow: 0 0 15px #ffff00; }
-.knowledge-particle:nth-child(11) { background: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
-.knowledge-particle:nth-child(12) { background: #00ffff; box-shadow: 0 0 15px #00ffff; }
-.knowledge-particle:nth-child(13) { background: #39ff14; box-shadow: 0 0 15px #39ff14; }
-.knowledge-particle:nth-child(14) { background: #ff6600; box-shadow: 0 0 15px #ff6600; }
-.knowledge-particle:nth-child(15) { background: #ffff00; box-shadow: 0 0 15px #ffff00; }
-
-/* Animasi buku naik dengan efek neon */
-@keyframes floatBook {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.8;
-    }
-    90% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-20vh) rotate(360deg);
-        opacity: 0;
-    }
-}
+border:none;
 
-/* Animasi partikel naik dengan efek neon */
-@keyframes particleFloat {
-    0% {
-        transform: translateY(0) scale(0);
-        opacity: 0;
-    }
-    20% {
-        opacity: 1;
-    }
-    80% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-300px) scale(2);
-        opacity: 0;
-    }
+border-radius:10px;
 }
 
-/* Efek gradasi neon dinamis di background */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 30% 50%, rgba(255, 0, 255, 0.15) 0%, rgba(0, 255, 255, 0.1) 50%, rgba(57, 255, 20, 0.05) 100%);
-    z-index: 0;
-    pointer-events: none;
-    animation: neonGradient 8s infinite alternate;
-}
+button{
 
-@keyframes neonGradient {
-    0% {
-        opacity: 0.3;
-        background: radial-gradient(circle at 20% 50%, rgba(255, 0, 255, 0.2) 0%, rgba(0, 255, 255, 0.1) 50%, transparent 80%);
-    }
-    50% {
-        opacity: 0.6;
-        background: radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.2) 0%, rgba(255, 0, 255, 0.1) 50%, rgba(57, 255, 20, 0.05) 80%);
-    }
-    100% {
-        opacity: 0.9;
-        background: radial-gradient(circle at 50% 80%, rgba(57, 255, 20, 0.2) 0%, rgba(255, 0, 255, 0.15) 50%, rgba(0, 255, 255, 0.05) 100%);
-    }
-}
+width:100%;
 
-/* Menambah efek neon line di tepi card */
-.card {
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1), 0 0 5px rgba(255, 0, 255, 0.1) !important;
-}
+padding:15px;
 
-/* Efek neon pada tombol */
-.btn-primary {
-    background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
-    color: white !important;
-    font-weight: bold !important;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5) !important;
-}
+background:#5546ff;
 
-.btn-primary:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7) !important;
-}
+color:white;
 
-.btn-secondary {
-    background: linear-gradient(135deg, #39ff14, #00ffff) !important;
-    color: black !important;
-    font-weight: bold !important;
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5) !important;
-}
+border:none;
 
-/* Efek neon pada header */
-.app-header {
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1) !important;
+border-radius:10px;
 }
 
-/* Efek neon pada teks logo */
-.logo h1 span {
-    color: #ff00ff !important;
-    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff !important;
+.success{
+text-align:center;
+color:#22c55e;
 }
 
-/* Efek neon pada badge */
-.badge {
-    background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
-    box-shadow: 0 0 8px rgba(255, 0, 255, 0.5) !important;
+.error{
+text-align:center;
+color:#ef4444;
 }
