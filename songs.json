@@ -1,0 +1,38 @@
+[
+    {
+        "judul": "Perfect",
+        "penyanyi": "Ed Sheeran",
+        "negara": "Inggris",
+        "genre": "Pop",
+        "tahun": "2017"
+    },
+    {
+        "judul": "Shape of You",
+        "penyanyi": "Ed Sheeran",
+        "negara": "Inggris",
+        "genre": "Pop",
+        "tahun": "2017"
+    },
+    {
+        "judul": "Dynamite",
+        "penyanyi": "BTS",
+        "negara": "Korea Selatan",
+        "genre": "K-Pop",
+        "tahun": "2020"
+    },
+    {
+        "judul": "Someone Like You",
+        "penyanyi": "Adele",
+        "negara": "Inggris",
+        "genre": "Pop",
+        "tahun": "2011"
+    },
+    {
+        "judul": "Hati-Hati di Jalan",
+        "penyanyi": "Tulus",
+        "negara": "Indonesia",
+        "genre": "Pop",
+        "tahun": "2022"
+    }
+
+]
