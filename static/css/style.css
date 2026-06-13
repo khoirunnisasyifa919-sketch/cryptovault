@@ -253,3 +253,13 @@ color:#ef4444;
     transform:translateY(-3px);
     box-shadow:0 0 20px rgba(124,58,237,0.5);
 }
+
+.btn-preview{
+background:#06b6d4;
+color:white;
+padding:12px 20px;
+border-radius:12px;
+text-decoration:none;
+font-weight:bold;
+margin:0 10px;
+}
