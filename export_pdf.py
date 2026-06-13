@@ -104,31 +104,34 @@ def generate_signed_pdf():
 
     elements.append(Spacer(1,20))
 
-    qr_img=Image(qr_buffer, width=150, height=150)
 
+    
+    qr_img = Image(qr_buffer, width=150, height=150)
+    qr_img.hAlign = "CENTER"
+    
     elements.append(qr_img)
-
+    
     elements.append(Spacer(1,10))
-
+    
     elements.append(
         Paragraph(
-            "CEO Digital Music Archive // Alunan Amerta",
-            styles["BodyText"]
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            "Syifa Khoirunnisa",
+            "<para align='center'><b>Syifa Khoirunnisa</b></para>",
             styles["Heading3"]
         )
     )
-
+    
     elements.append(
         Paragraph(
-            datetime.now().strftime(
-                "%d-%m-%Y %H:%M:%S"
-            ),
+            "<para align='center'>CEO Digital Music Archive // Alunan Amerta</para>",
+            styles["BodyText"]
+        )
+    )
+    
+    elements.append(Spacer(1,5))
+    
+    elements.append(
+        Paragraph(
+            f"<para align='center'>{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}</para>",
             styles["Italic"]
         )
     )
