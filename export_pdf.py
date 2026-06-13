@@ -111,15 +111,7 @@ def generate_signed_pdf():
         )
     )
 
-    elements.append(Spacer(1,20))
-
-       qr_img = Image(
-        qr_buffer,
-        width=150,
-        height=150,
-        hAlign='LEFT'
-    )
-    
+    qr_img=Image(qr_buffer, width=150, height=150) 
     elements.append(qr_img)
 
     elements.append(Spacer(1,10))
