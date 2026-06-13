@@ -121,8 +121,8 @@ def generate_signed_pdf():
         height=150
     )
     
-    # Posisi QR di tengah
-    qr_img.hAlign = "CENTER"
+    # Posisi QR di kiri
+    qr_img.hAlign = "LEFT"
     
     elements.append(qr_img)
     
