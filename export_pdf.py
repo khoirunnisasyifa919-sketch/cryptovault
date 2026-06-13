@@ -112,7 +112,7 @@ def generate_signed_pdf():
         )
     )
     
-    elements.append(Spacer(1,15))
+    elements.append(Spacer(1,10))
     
     # QR CODE
     qr_img = Image(
@@ -126,7 +126,7 @@ def generate_signed_pdf():
     
     elements.append(qr_img)
     
-    elements.append(Spacer(1,15))
+    elements.append(Spacer(1,10))
     
     # Nama Pemilik
     elements.append(
