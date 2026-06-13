@@ -95,26 +95,27 @@ def generate_signed_pdf():
 
     elements.append(Spacer(1,25))
 
-    
-
-   
     elements.append(
         Paragraph(
             f"<b>SHA-256:</b><br/>{sha_signature}",
             styles["BodyText"]
         )
     )
-     elements.append(
-        Paragraph(
-            "CEO Alunan Amerta",
-            styles["BodyText"]
-        )
-    )
 
-    qr_img=Image(qr_buffer, width=150, height=150) 
+    elements.append(Spacer(1,20))
+
+    qr_img=Image(qr_buffer, width=150, height=150)
+
     elements.append(qr_img)
 
     elements.append(Spacer(1,10))
+
+    elements.append(
+        Paragraph(
+            "CEO Digital Music Archive // Alunan Amerta",
+            styles["BodyText"]
+        )
+    )
 
     elements.append(
         Paragraph(
@@ -135,3 +136,6 @@ def generate_signed_pdf():
     doc.build(elements)
 
     return pdf_path
+
+   
+    
