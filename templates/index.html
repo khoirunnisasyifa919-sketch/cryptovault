@@ -63,8 +63,10 @@ Digital Signature SHA-256
 ✏️
 </a>
 
-<a href="/delete/{{ loop.index0 }}">
-🗑️
+<a href="/delete/{{ loop.index0 }}"
+   class="btn-delete"
+   onclick="return confirm('⚠️ PERINGATAN\n\nApakah Anda yakin ingin menghapus data lagu ini?\n\nData yang telah dihapus tidak dapat dikembalikan.')">
+   🗑️ Hapus
 </a>
 
 </td>
