@@ -126,9 +126,7 @@ def verify(signature):
         hash=signature
     )
 
-@app.route("/verify-error")
-def verify_error_demo():
-    return render_template("verify_error.html")
+
     
 if __name__ == "__main__":
     app.run(debug=True)
