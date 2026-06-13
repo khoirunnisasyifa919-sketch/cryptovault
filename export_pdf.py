@@ -95,6 +95,14 @@ def generate_signed_pdf():
 
     elements.append(Spacer(1,25))
 
+    
+
+    elements.append(
+        Paragraph(
+            "CEO Alunan Amerta",
+            styles["BodyText"]
+        )
+    )
     elements.append(
         Paragraph(
             f"<b>SHA-256:</b><br/>{sha_signature}",
@@ -109,13 +117,6 @@ def generate_signed_pdf():
     elements.append(qr_img)
 
     elements.append(Spacer(1,10))
-
-    elements.append(
-        Paragraph(
-            "CEO Alunan Amerta",
-            styles["BodyText"]
-        )
-    )
 
     elements.append(
         Paragraph(
