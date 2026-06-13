@@ -2,11 +2,21 @@
 
 {% block content %}
 
-<h1>Pratinjau Dokumen PDF</h1>
+<div class="card">
+
+<h1>📄 Pratinjau Dokumen PDF</h1>
+
+<p>
+Dokumen berikut akan diekspor dan ditandatangani
+menggunakan SHA-256 Digital Signature.
+</p>
+
+<br>
 
 <table>
 
 <tr>
+<th>No</th>
 <th>Judul Lagu</th>
 <th>Penyanyi</th>
 <th>Negara</th>
@@ -16,6 +26,7 @@
 
 {% for s in songs %}
 <tr>
+<td>{{ loop.index }}</td>
 <td>{{ s.judul }}</td>
 <td>{{ s.penyanyi }}</td>
 <td>{{ s.negara }}</td>
@@ -25,5 +36,23 @@
 {% endfor %}
 
 </table>
+
+<br>
+
+<div style="text-align:center">
+
+<a href="{{ url_for('export_pdf') }}"
+class="btn-export">
+📄 Download PDF
+</a>
+
+<a href="{{ url_for('index') }}"
+class="btn-add">
+🏠 Kembali Ke Halaman Utama
+</a>
+
+</div>
+
+</div>
 
 {% endblock %}
