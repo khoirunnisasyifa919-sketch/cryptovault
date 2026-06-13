@@ -97,23 +97,29 @@ def generate_signed_pdf():
 
     
 
-    elements.append(
-        Paragraph(
-            "CEO Alunan Amerta",
-            styles["BodyText"]
-        )
-    )
+   
     elements.append(
         Paragraph(
             f"<b>SHA-256:</b><br/>{sha_signature}",
             styles["BodyText"]
         )
     )
+     elements.append(
+        Paragraph(
+            "CEO Alunan Amerta",
+            styles["BodyText"]
+        )
+    )
 
     elements.append(Spacer(1,20))
 
-    qr_img=Image(qr_buffer, width=150, height=150)
-
+       qr_img = Image(
+        qr_buffer,
+        width=150,
+        height=150,
+        hAlign='LEFT'
+    )
+    
     elements.append(qr_img)
 
     elements.append(Spacer(1,10))
