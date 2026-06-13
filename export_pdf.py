@@ -96,46 +96,57 @@ def generate_signed_pdf():
     elements.append(Spacer(1,25))
 
     elements.append(
+    Paragraph(
+        f"<b>SHA-256:</b><br/>{sha_signature}",
+        styles["BodyText"]
+    )
+    )
+    
+    elements.append(Spacer(1,20))
+    
+    # CEO
+    elements.append(
         Paragraph(
-            f"<b>SHA-256:</b><br/>{sha_signature}",
+            "CEO Digital Music Archive // Alunan Amerta",
             styles["BodyText"]
         )
     )
-
-    elements.append(Spacer(1,20))
-
-
     
-    qr_img = Image(qr_buffer, width=150, height=150)
+    elements.append(Spacer(1,15))
+    
+    # QR CODE
+    qr_img = Image(
+        qr_buffer,
+        width=150,
+        height=150
+    )
+    
+    # Posisi QR di tengah
     qr_img.hAlign = "CENTER"
     
     elements.append(qr_img)
     
-    elements.append(Spacer(1,10))
+    elements.append(Spacer(1,15))
     
+    # Nama Pemilik
     elements.append(
         Paragraph(
-            "<para align='center'><b>Syifa Khoirunnisa</b></para>",
+            "Syifa Khoirunnisa",
             styles["Heading3"]
         )
     )
     
+    elements.append(Spacer(1,10))
+    
+    # Tanggal Sertifikat
     elements.append(
         Paragraph(
-            "<para align='center'>CEO Digital Music Archive // Alunan Amerta</para>",
-            styles["BodyText"]
-        )
-    )
-    
-    elements.append(Spacer(1,5))
-    
-    elements.append(
-        Paragraph(
-            f"<para align='center'>{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}</para>",
+            datetime.now().strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
             styles["Italic"]
         )
     )
-
     doc.build(elements)
 
     return pdf_path
